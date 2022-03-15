@@ -20,21 +20,33 @@ let formSubmitHandler = (event) => {
 let getUserRepos = (users) => {
     let apiUrl = "https://api.github.com/users/" + users + "/repos";
 
-    fetch(apiUrl).then(response => {
-        response.json().then(data => {
-            displayRepos(data, users);
-        })
+    fetch(apiUrl)
+    .then(response => {
+        if (response.ok) {
+            response.json().then(data => {
+                displayRepos(data, users);
+            });  
+        } else {
+            alert("Error: GitHub User Not Found");
+        }
     })
+    .catch(error => {
+        alert("Unable to connect to GitHub");
+    });
 }
 
 let displayRepos = (repos, searchTerm) => {
+    if (repos.length === 0) {
+        repoContainerEl.textContent = "No repositories found";
+        return;
+    }
+
     repoContainerEl.textContent = "";
     repoSearchTerm.textContent = searchTerm;
 
     for (let i = 0; i <repos.length; i++) {
         // format repo name
         let repoName = repos[i].owner.login + "/" + repos[i].name;
-        console.log(repoName);
 
         // container for each repo
         let repoEl = document.createElement('div');
