@@ -1,4 +1,5 @@
 let issueContainerEl = document.querySelector('#issues-container'); // select the div container based on #issues-container id
+let limitWarningEl = document.querySelector('#limit-warning'); // select div container based on #limit-warning id
 
 let getRepoIssues = (repo) => { // getRepoIssues function will pass a parameter, repo (name of the repository)
     let apiUrl = "https://api.github.com/repos/" + repo + "/issues?direction=asc"; // dynamically create repo address and store in apiUrl variable
@@ -8,6 +9,9 @@ let getRepoIssues = (repo) => { // getRepoIssues function will pass a parameter,
                 response.json().then(data => { // fulfill promise by running the displayIssues function with the .then and (data) parameter.
                     displayIssues(data);
                 })
+            if (response.headers.get("Link")) { // if Link header exists within the response object
+                displayWarning(repo); // displayWarning function invokes
+            }
             } else { // if response is unsuccessful return this alert
                 alert("There was a problem with your request!");
             }
@@ -43,4 +47,17 @@ let displayIssues = (issues) => {
         issueContainerEl.appendChild(issueEl); // append issueEl span element into issueContainerEl, which selects the div container by the id #issues-container and appends it into it
     }
 }
-getRepoIssues("eisforgene/wordle");
+
+let displayWarning = (repo) => {
+    // add text to warning container
+    limitWarningEl.textContent = "To see more than 30 issues, visit ";
+
+    let linkEl = document.createElement('a'); // create an a tag that defines a hyperlink
+    linkEl.textContent = "See More Issues on GitHub.com"; // set text for the element
+    linkEl.setAttribute('href', 'https://github.com/' + repo + '/issues'); // specifies link's destination | href = address
+    linkEl.setAttribute('target', '_blank'); // target specifies where to open the linked document, blank = new window | target = action
+
+    limitWarningEl.appendChild(linkEl); // append to warning container
+};
+
+getRepoIssues("facebook/react");
