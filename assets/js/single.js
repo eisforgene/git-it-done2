@@ -58,6 +58,9 @@ let displayWarning = (repo) => {
     linkEl.setAttribute('target', '_blank'); // target specifies where to open the linked document, blank = new window | target = action
 
     limitWarningEl.appendChild(linkEl); // append to warning container
+
+    // create an a element with specific text content and attributes
+    // append to #limit-warning container
 };
 
 getRepoIssues("facebook/react");
