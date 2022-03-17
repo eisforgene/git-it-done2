@@ -53,7 +53,7 @@ let displayRepos = (repos, searchTerm) => { // displayRepos function contains tw
         // container for each repo
         let repoEl = document.createElement('a'); // create an a attribute which creates a hyperlink
         repoEl.classList = "list-item flex-row justify-space-between align-center";
-        repoEl.setAttribute("href" , "./single-repo.html?repo=" + repoName); // set the attribute with an href (link destination) to single-repo.html
+        repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName); // set the attribute with an href (link destination) to single-repo.html
         // this href is relative to the original html page (index.html at the root)
 
         // create span element to hold repository name

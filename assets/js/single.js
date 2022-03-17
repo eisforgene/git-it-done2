@@ -1,5 +1,13 @@
 let issueContainerEl = document.querySelector('#issues-container'); // select the div container based on #issues-container id
 let limitWarningEl = document.querySelector('#limit-warning'); // select div container based on #limit-warning id
+let repoNameEl = document.querySelector('#repo-name');
+
+let getRepoName = () => {
+    let queryString = document.location.search; // locate the query string 
+    let repoName = queryString.split("=")[1]; // grab the query string and split the string at the '=', grab the string at index [1] since [0] will be ?repo
+    getRepoIssues(repoName); // call getRepoIssues function with repoName as the parameter
+    repoNameEl.textContent = repoName; // set textContent for the span element by grabbing it with a querySelector and placing the repoName into it
+}
 
 let getRepoIssues = (repo) => { // getRepoIssues function will pass a parameter, repo (name of the repository)
     let apiUrl = "https://api.github.com/repos/" + repo + "/issues?direction=asc"; // dynamically create repo address and store in apiUrl variable
@@ -63,4 +71,4 @@ let displayWarning = (repo) => {
     // append to #limit-warning container
 };
 
-getRepoIssues("facebook/react");
+getRepoName();
