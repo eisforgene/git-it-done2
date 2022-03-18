@@ -4,9 +4,15 @@ let repoNameEl = document.querySelector('#repo-name');
 
 let getRepoName = () => {
     let queryString = document.location.search; // locate the query string 
-    let repoName = queryString.split("=")[1]; // grab the query string and split the string at the '=', grab the string at index [1] since [0] will be ?repo
-    getRepoIssues(repoName); // call getRepoIssues function with repoName as the parameter
-    repoNameEl.textContent = repoName; // set textContent for the span element by grabbing it with a querySelector and placing the repoName into it
+    let repoName = queryString.split("=")[1]; // grab the query string and split the string at '=', grab the string at index [1] since [0] will be ?repo    
+
+    if (repoName) { // if there's a repo name => execute these expressions
+        repoNameEl.textContent = repoName; // set textContent for the span element by grabbing it with a querySelector and placing the repoName into it
+        getRepoIssues(repoName); // call getRepoIssues function with repoName as the parameter
+    } else { // if not => go to this page
+        document.location.replace('./index.html');
+    }
+
 }
 
 let getRepoIssues = (repo) => { // getRepoIssues function will pass a parameter, repo (name of the repository)
@@ -16,12 +22,13 @@ let getRepoIssues = (repo) => { // getRepoIssues function will pass a parameter,
             if (response.ok) { // if there is a response from the fetch (.ok) return the response promise in json format
                 response.json().then(data => { // fulfill promise by running the displayIssues function with the .then and (data) parameter.
                     displayIssues(data);
-                })
-            if (response.headers.get("Link")) { // if Link header exists within the response object
-                displayWarning(repo); // displayWarning function invokes
-            }
+
+                    if (response.headers.get("Link")) { // if Link header exists within the response object
+                        displayWarning(repo); // displayWarning function invokes
+                    }
+                });
             } else { // if response is unsuccessful return this alert
-                alert("There was a problem with your request!");
+                document.location.replace('./index.html');
             }
         });
 }
