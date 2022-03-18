@@ -78,4 +78,11 @@ let displayRepos = (repos, searchTerm) => { // displayRepos function contains tw
         repoEl.appendChild(statusEl);
     }
 } 
+
+let getFeaturedRepos = (language) => {
+    var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
+
+    fetch(apiUrl);
+}
+
 userFormEl.addEventListener("submit", formSubmitHandler);
