@@ -4,6 +4,7 @@ let userFormEl = document.querySelector("#user-form");
 let nameInputEl = document.querySelector("#username");
 let repoContainerEl = document.querySelector("#repos-container");
 let repoSearchTerm = document.querySelector("#repo-search-term");
+let languageButtonsEl = document.querySelector("#language-buttons")
 
 
 let formSubmitHandler = (event) => { 
@@ -17,6 +18,16 @@ let formSubmitHandler = (event) => {
         alert("Please enter a GitHub username");
     }
     console.log(event); 
+}
+
+let buttonClickHandler = (event) => {
+    let language = event.target.getAttribute('data-language'); // grabs the value for the attribute data-language on click event
+
+    if (language) {
+        getFeaturedRepos(language);
+
+        repoContainerEl.textContent = "";
+    }
 }
 
 let getUserRepos = (users) => { 
@@ -83,7 +94,7 @@ let getFeaturedRepos = (language) => { // function passes in a language
     var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues"; // dynamically generate apiUrl, n keyword = language, +is:featured = search topic, & sets a new parameter which in this example is sort
 
     fetch(apiUrl).then(response => { // format response
-        if (response.ok) { // if response is accepted
+        if (response.ok) { // if response is accepted, change into json format and invoke displayFunctions with data.items and language as parameters
             response.json()
             .then(data => {
                 displayRepos(data.items, language);
@@ -95,3 +106,4 @@ let getFeaturedRepos = (language) => { // function passes in a language
 }
 
 userFormEl.addEventListener("submit", formSubmitHandler);
+languageButtonsEl.addEventListener('click', buttonClickHandler);
