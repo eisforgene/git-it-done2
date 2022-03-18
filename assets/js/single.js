@@ -3,7 +3,7 @@ let limitWarningEl = document.querySelector('#limit-warning'); // select div con
 let repoNameEl = document.querySelector('#repo-name');
 
 let getRepoName = () => {
-    let queryString = document.location.search; // locate the query string 
+    let queryString = document.location.search; // locate the query string (associated with forms)
     let repoName = queryString.split("=")[1]; // grab the query string and split the string at '=', grab the string at index [1] since [0] will be ?repo    
 
     if (repoName) { // if there's a repo name => execute these expressions
