@@ -79,10 +79,19 @@ let displayRepos = (repos, searchTerm) => { // displayRepos function contains tw
     }
 } 
 
-let getFeaturedRepos = (language) => {
-    var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues";
+let getFeaturedRepos = (language) => { // function passes in a language
+    var apiUrl = "https://api.github.com/search/repositories?q=" + language + "+is:featured&sort=help-wanted-issues"; // dynamically generate apiUrl, n keyword = language, +is:featured = search topic, & sets a new parameter which in this example is sort
 
-    fetch(apiUrl);
+    fetch(apiUrl).then(response => { // format response
+        if (response.ok) { // if response is accepted
+            response.json()
+            .then(data => {
+                displayRepos(data.items, language);
+            })
+        } else {
+            alert('Error: GitHub User Not Found');
+        }
+    });
 }
 
 userFormEl.addEventListener("submit", formSubmitHandler);
